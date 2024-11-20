@@ -1,5 +1,16 @@
-<nav>
-  <a routerLink="/add">Add Note</a> |
-  <a routerLink="/list">Go to List Page</a>
-</nav>
-<router-outlet></router-outlet>
+<div class="container">
+  <header>
+    <nav>
+      <a routerLink="/add">Add Note</a> |
+      <a routerLink="/list">Go to List Page</a>
+    </nav>
+  </header>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+  <footer>
+    <div>
+      <p>&copy; 2023 Simple Note Taking App. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
