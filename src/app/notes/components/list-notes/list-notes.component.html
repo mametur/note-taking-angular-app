@@ -1,0 +1,16 @@
+<div *ngIf="currentNotes.length > 0; else noNotes" class="notes-container">
+  <mat-card *ngFor="let note of currentNotes" class="note-card">
+    <mat-card-header>
+      <mat-card-title>{{ note.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ note.description }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #noNotes>
+  <div class="no-notes-message">
+    <p>No notes available</p>
+  </div>
+</ng-template>

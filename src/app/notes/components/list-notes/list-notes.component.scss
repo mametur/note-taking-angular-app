@@ -1,0 +1,52 @@
+// Container for the notes list
+.notes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+    justify-content: center; // Center the cards horizontally
+  }
+  
+  // Each note card styling
+  mat-card {
+    width: 300px;
+    border-radius: 8px; // Rounded corners
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Shadow for a subtle card effect
+    transition: transform 0.2s ease, box-shadow 0.2s ease; // Smooth hover effect
+  
+    &:hover {
+      transform: translateY(-4px); // Lift effect on hover
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); // Increase shadow on hover
+    }
+  }
+  
+  // Title styling inside the card
+  mat-card-header {
+    background-color: #f5f5f5; // Light background for the header
+    padding: 16px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  mat-card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  // Content styling inside the card
+  mat-card-content {
+    padding: 16px;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  // Fallback text when there are no notes
+  .no-notes-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 32px;
+  }
+  

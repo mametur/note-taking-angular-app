@@ -1,0 +1,16 @@
+<div class="form-container">
+  <h1>Note-Taking App</h1>
+  <form [formGroup]="noteForm" (ngSubmit)="onSubmit()" class="note-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Add Note</button>
+  </form>
+</div>
