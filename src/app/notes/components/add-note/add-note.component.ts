@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Note } from '../../state/note.model';
+import { selectNotes } from '../../state/notes.selectors';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -22,12 +24,14 @@ import { Note } from '../../state/note.model';
 })
 export class AddNoteComponent {
   noteForm: FormGroup;
-
+  notes$: Observable<Note[]>;
   constructor(private fb: FormBuilder, private store: Store) {
     this.noteForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
     });
+    // Get the current notes from the store
+    this.notes$ = this.store.select(selectNotes);
   }
 
   onSubmit() {
@@ -36,7 +40,6 @@ export class AddNoteComponent {
       this.store.dispatch(addNote({ note }));
       this.noteForm.reset();
       alert('Note added successfully!');
-
     }
   }
 }

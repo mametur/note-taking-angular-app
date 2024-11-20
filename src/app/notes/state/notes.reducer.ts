@@ -13,5 +13,5 @@ export const notesReducer = createReducer(
   on(addNote, (state, { note }) => ({
     ...state,
     notes: [...state.notes, note],
-  }))
+  })),
 );
