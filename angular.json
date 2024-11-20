@@ -97,6 +97,17 @@
             ],
             "scripts": []
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "note-taking-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "note-taking-app:serve:production"
+            }
+          }
         }
       }
     }
