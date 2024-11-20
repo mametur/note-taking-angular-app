@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app.routes';
 import { StoreModule } from '@ngrx/store';
 import { notesReducer } from './notes/state/notes.reducer';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -11,6 +12,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({ notes: notesReducer }),
+    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent],
 })
