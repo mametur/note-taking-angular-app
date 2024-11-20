@@ -5,7 +5,7 @@ import { addNote } from '../../state/notes.actions';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Note } from '../../state/note.model';
+import { Note } from '../../interface/note';
 import { selectNotes } from '../../state/notes.selectors';
 import { Observable } from 'rxjs';
 

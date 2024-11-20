@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Note } from '../../state/note.model';
+import { Note } from '../../interface/note';
 import { selectNotes } from '../../state/notes.selectors';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
