@@ -1,54 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddNoteComponent } from './add-note.component';
 import { StoreModule } from '@ngrx/store';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import { addNote } from '../../state/notes.actions';
-import { of } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
-
-
-// Mock reducer if needed or provide a dummy one
-const dummyReducer = (state = { notes: [] }, action: any) => state;
+import { addOrUpdateNote } from '../../state/notes.actions';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatFormFieldHarness } from '@angular/material/form-field/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 describe('AddNoteComponent', () => {
-  let component: AddNoteComponent;
-  let fixture: ComponentFixture<AddNoteComponent>;
+
   let store: jasmine.SpyObj<Store>;
+  let fixture: ComponentFixture<AddNoteComponent>;
+  let loader: HarnessLoader;
 
   beforeEach(async () => {
     // Mock Store
-    store = jasmine.createSpyObj('Store', ['dispatch', 'select']);
-    store.select.and.returnValue(of([])); // Returning empty array for notes
+    store = jasmine.createSpyObj('Store', ['dispatch']);
 
     await TestBed.configureTestingModule({
       imports: [
         AddNoteComponent, // Import the standalone component
-        StoreModule.forRoot({ notes: dummyReducer }), // Provide the Store module with a dummy reducer
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        BrowserAnimationsModule
+        NoopAnimationsModule
       ],
       providers: [
-        FormBuilder,
         { provide: Store, useValue: store },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddNoteComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges(); // Trigger change detection
-  });
-
-  it('should create the AddNoteComponent', () => {
-    expect(component).toBeTruthy();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should have the "Note-Taking App" header', () => {
@@ -56,33 +39,45 @@ describe('AddNoteComponent', () => {
     expect(headerElement.textContent).toContain('Note-Taking App');
   });
 
-  it('should have the "Add Note" button', () => {
-    const buttonElement = fixture.nativeElement.querySelector('button');
-    expect(buttonElement.textContent).toContain('Add Note');
+  it('should have the "Add Note" button', async () => {
+    const button = await loader.getHarness(MatButtonHarness);
+    expect(await button.getText()).toContain('Add Note');
   });
 
-  it('should call dispatch with addNote action when form is valid', () => {
-    component.noteForm.controls['title'].setValue('Test Title');
-    component.noteForm.controls['description'].setValue('Test Description');
-    
+  it('should call dispatch with addNote action when form is valid', async () => {
+    const title = await loader.getHarness(MatFormFieldHarness.with({ floatingLabelText: 'Title' }));
+    await (await title.getControl(MatInputHarness))?.setValue('Test Title');
+
+    const description = await loader.getHarness(MatFormFieldHarness.with({ floatingLabelText: 'Description' }));
+    await (await description.getControl(MatInputHarness))?.setValue('Test Description');
+
     // Trigger the form submit
-    component.onSubmit();
+    const button = await loader.getHarness(MatButtonHarness);
+    await button.click();
 
     // Check if dispatch was called with addNote action
-    expect(store.dispatch).toHaveBeenCalledWith(addNote({
+    expect(store.dispatch).toHaveBeenCalledWith(addOrUpdateNote({
       note: { title: 'Test Title', description: 'Test Description' }
     }));
   });
-  
-  it('should not call dispatch when form is invalid', () => {
-    component.noteForm.controls['title'].setValue('');
-    component.noteForm.controls['description'].setValue('');
+
+  it('should not call dispatch when form is invalid', async () => {
+    const title = await loader.getHarness(MatFormFieldHarness.with({ floatingLabelText: 'Title' }));
+    (await title.getControl(MatInputHarness))?.setValue('');
+
+
+    const description = await loader.getHarness(MatFormFieldHarness.with({ floatingLabelText: 'Description' }));
+    (await description.getControl(MatInputHarness))?.setValue('');
 
     // Trigger the form submit
-    component.onSubmit();
+    const button = await loader.getHarness(MatButtonHarness);
+    await button.click();
 
     // Check if dispatch was not called
     expect(store.dispatch).not.toHaveBeenCalled();
+
+    expect(await title.isControlValid()).toBeFalse();
+    expect(await description.isControlValid()).toBeFalse();
   });
 
 });
